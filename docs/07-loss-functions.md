@@ -1,6 +1,6 @@
 # 07 — Loss functions
 
-Code: `src/lib/losses.py`
+Code: `src/utils/losses.py`
 
 ## What a loss is
 

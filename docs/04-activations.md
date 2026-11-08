@@ -1,6 +1,6 @@
 # 04 — Activation functions
 
-Code: `src/lib/activations.py`
+Code: `src/utils/activations.py`
 
 ## Why activations exist
 

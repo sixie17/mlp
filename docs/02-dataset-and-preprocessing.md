@@ -1,6 +1,6 @@
 # 02 — Dataset and preprocessing
 
-Code: `src/lib/preprocessing.py`
+Code: `src/utils/preprocessing.py`
 
 ## The dataset
 

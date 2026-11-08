@@ -46,7 +46,7 @@ python src/bonus/main.py predict --dataset data/data_validation.csv --model adam
 
 | Requirement | Implementation |
 |-------------|----------------|
-| no NN library, from scratch | `src/lib/` uses only NumPy for math |
+| no NN library, from scratch | `src/utils/` uses only NumPy for math |
 | ≥ 2 hidden layers by default | `--layer 24 24` |
 | modular network | `--layer`, `--activation`, `--weights_initializer`, `--loss`, `--epochs`, `--batch_size`, `--learning_rate` |
 | softmax output | `activations.softmax`, enforced by `Network` |

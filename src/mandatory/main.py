@@ -14,9 +14,9 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
-from lib.cli import (add_describe_command, add_predict_command, add_split_command,
+from utils.cli import (add_describe_command, add_predict_command, add_split_command,
                      add_train_command, create_parser, parse_arguments)
-from lib.pipeline import run_describe, run_predict, run_split, run_train
+from utils.pipeline import run_describe, run_predict, run_split, run_train
 
 EXAMPLES = """\
   python src/mandatory/main.py describe

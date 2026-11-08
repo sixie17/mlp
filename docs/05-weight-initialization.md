@@ -1,6 +1,6 @@
 # 05 — Weight initialization
 
-Code: `src/lib/initializers.py`
+Code: `src/utils/initializers.py`
 
 ## Why weights start random
 

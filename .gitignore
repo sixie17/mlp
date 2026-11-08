@@ -1,6 +1,6 @@
 # Virtual environment (currently created in the project root)
 bin/
-lib/
+/lib/
 lib64
 include/
 pyvenv.cfg

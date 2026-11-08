@@ -1,6 +1,6 @@
 # 10 — Training loop
 
-Code: `src/lib/training.py`
+Code: `src/utils/training.py`
 
 This is where feedforward, backpropagation and gradient descent come together.
 

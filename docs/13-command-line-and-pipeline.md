@@ -1,6 +1,6 @@
 # 13 — Command line and pipeline
 
-Code: `src/lib/cli.py`, `src/lib/pipeline.py`, `src/mandatory/main.py`, `src/bonus/main.py`
+Code: `src/utils/cli.py`, `src/utils/pipeline.py`, `src/mandatory/main.py`, `src/bonus/main.py`
 
 ## The two programs
 
@@ -23,9 +23,9 @@ their defaults.
 ### How a `main.py` works
 
 ```python
-sys.path.insert(0, str(Path(__file__).resolve().parents[1]))   # make src/ importable → "lib"
-from lib.cli import ...
-from lib.pipeline import ...
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))   # make src/ importable → "utils"
+from utils.cli import ...
+from utils.pipeline import ...
 
 def build_parser(): ...        # declare the commands (from cli.py)
 def main():
@@ -41,7 +41,7 @@ def main():
 ```
 
 The `sys.path` line lets you run the script from anywhere: it adds `src/` to Python's import path,
-so `import lib` finds `src/lib/`.
+so `import utils` finds `src/utils/`.
 
 The mandatory program passes `optimizer="sgd"`; the bonus program passes the user's choice,
 creates an `EarlyStopping` when `--early_stopping` is set, and turns `extra_metrics` on.

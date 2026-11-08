@@ -8,18 +8,18 @@ Read the files in order: each one builds on the previous ones.
 | # | File | What you learn | Code |
 |---|------|----------------|------|
 | 01 | [Project overview](01-project-overview.md) | The subject, the workflow, the folder layout | everything |
-| 02 | [Dataset and preprocessing](02-dataset-and-preprocessing.md) | The data, cleaning, stratified split, standardization | `lib/preprocessing.py` |
+| 02 | [Dataset and preprocessing](02-dataset-and-preprocessing.md) | The data, cleaning, stratified split, standardization | `utils/preprocessing.py` |
 | 03 | [Neural network concepts](03-neural-network-concepts.md) | Perceptron, layers, shapes, what "learning" means | — |
-| 04 | [Activation functions](04-activations.md) | sigmoid, ReLU, tanh, softmax and their derivatives | `lib/activations.py` |
-| 05 | [Weight initialization](05-weight-initialization.md) | Why random weights, He vs Xavier | `lib/initializers.py` |
-| 06 | [Dense layer and network](06-dense-layer-and-network.md) | Feedforward, the `DenseLayer` and `Network` classes, save/load | `lib/layers.py`, `lib/network.py` |
-| 07 | [Loss functions](07-loss-functions.md) | Binary and categorical cross-entropy | `lib/losses.py` |
-| 08 | [Backpropagation](08-backpropagation.md) | The chain rule, the gradient formulas, step by step | `lib/network.py`, `lib/layers.py` |
-| 09 | [Gradient descent and optimizers](09-gradient-descent-and-optimizers.md) | SGD, Momentum, Nesterov, RMSprop, Adam | `lib/optimizers.py` |
-| 10 | [Training loop](10-training-loop.md) | Epochs, mini-batches, evaluation, early stopping | `lib/training.py` |
-| 11 | [Metrics](11-metrics.md) | Accuracy, precision, recall, F1, ROC AUC | `lib/metrics.py` |
-| 12 | [Learning curves and overfitting](12-learning-curves-and-overfitting.md) | Reading the plots, overfitting, choosing layers | `lib/plots.py` |
-| 13 | [Command line and pipeline](13-command-line-and-pipeline.md) | Every command and option, what each program does | `lib/cli.py`, `lib/pipeline.py`, `mandatory/`, `bonus/` |
+| 04 | [Activation functions](04-activations.md) | sigmoid, ReLU, tanh, softmax and their derivatives | `utils/activations.py` |
+| 05 | [Weight initialization](05-weight-initialization.md) | Why random weights, He vs Xavier | `utils/initializers.py` |
+| 06 | [Dense layer and network](06-dense-layer-and-network.md) | Feedforward, the `DenseLayer` and `Network` classes, save/load | `utils/layers.py`, `utils/network.py` |
+| 07 | [Loss functions](07-loss-functions.md) | Binary and categorical cross-entropy | `utils/losses.py` |
+| 08 | [Backpropagation](08-backpropagation.md) | The chain rule, the gradient formulas, step by step | `utils/network.py`, `utils/layers.py` |
+| 09 | [Gradient descent and optimizers](09-gradient-descent-and-optimizers.md) | SGD, Momentum, Nesterov, RMSprop, Adam | `utils/optimizers.py` |
+| 10 | [Training loop](10-training-loop.md) | Epochs, mini-batches, evaluation, early stopping | `utils/training.py` |
+| 11 | [Metrics](11-metrics.md) | Accuracy, precision, recall, F1, ROC AUC | `utils/metrics.py` |
+| 12 | [Learning curves and overfitting](12-learning-curves-and-overfitting.md) | Reading the plots, overfitting, choosing layers | `utils/plots.py` |
+| 13 | [Command line and pipeline](13-command-line-and-pipeline.md) | Every command and option, what each program does | `utils/cli.py`, `utils/pipeline.py`, `mandatory/`, `bonus/` |
 | 14 | [Evaluation guide](14-evaluation-guide.md) | What to run and what to say during the defense | — |
 
 ## Quick start

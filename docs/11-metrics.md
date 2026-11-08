@@ -1,6 +1,6 @@
 # 11 — Metrics
 
-Code: `src/lib/metrics.py`
+Code: `src/utils/metrics.py`
 
 Metrics measure how good the predictions are, in ways people can interpret. Unlike the loss, they
 are not used for learning. **Malignant (1) is the positive class.**

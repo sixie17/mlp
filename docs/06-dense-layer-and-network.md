@@ -1,6 +1,6 @@
 # 06 — Dense layer and network
 
-Code: `src/lib/layers.py`, `src/lib/network.py`
+Code: `src/utils/layers.py`, `src/utils/network.py`
 
 ## `DenseLayer` (layers.py)
 

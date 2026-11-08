@@ -18,11 +18,11 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
-from lib.cli import (add_compare_command, add_describe_command, add_predict_command,  # noqa: E402
+from utils.cli import (add_compare_command, add_describe_command, add_predict_command,  # noqa: E402
                      add_split_command, add_train_command, create_parser, parse_arguments)
-from lib.optimizers import OPTIMIZERS  # noqa: E402
-from lib.pipeline import run_compare, run_describe, run_predict, run_split, run_train  # noqa: E402
-from lib.training import EarlyStopping  # noqa: E402
+from utils.optimizers import OPTIMIZERS  # noqa: E402
+from utils.pipeline import run_compare, run_describe, run_predict, run_split, run_train  # noqa: E402
+from utils.training import EarlyStopping  # noqa: E402
 
 EXAMPLES = """\
   python src/bonus/main.py split

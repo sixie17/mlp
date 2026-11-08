@@ -1,6 +1,6 @@
 # 12 — Learning curves and overfitting
 
-Code: `src/lib/plots.py`
+Code: `src/utils/plots.py`
 
 ## The plots
 

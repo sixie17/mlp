@@ -1,6 +1,6 @@
 # 09 — Gradient descent and optimizers
 
-Code: `src/lib/optimizers.py`
+Code: `src/utils/optimizers.py`
 
 ## Gradient descent
 

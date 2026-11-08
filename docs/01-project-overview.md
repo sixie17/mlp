@@ -38,7 +38,7 @@ mlp/
 │   └── data.csv                 the raw dataset (569 rows, no header)
 ├── docs/                        this documentation
 ├── src/
-│   ├── lib/                     the library: all the logic lives here
+│   ├── utils/                   the library: all the logic lives here
 │   │   ├── preprocessing.py     loading, cleaning, splitting, scaling, one-hot
 │   │   ├── activations.py       sigmoid, relu, tanh, identity, softmax + derivatives
 │   │   ├── initializers.py      heUniform, heNormal, xavierUniform, xavierNormal
@@ -57,11 +57,11 @@ mlp/
 └── en.subject.pdf
 ```
 
-### Why this split between `lib/`, `mandatory/` and `bonus/`?
+### Why this split between `utils/`, `mandatory/` and `bonus/`?
 
-- `lib/` contains **every** function and class. It does not know about the command line.
+- `utils/` contains **every** function and class. It does not know about the command line.
 - `mandatory/main.py` and `bonus/main.py` are **thin**: they read the command-line arguments and
-  call functions from `lib/pipeline.py`. The only differences are the options they offer:
+  call functions from `utils/pipeline.py`. The only differences are the options they offer:
   - mandatory always trains with plain gradient descent (SGD);
   - bonus adds `--optimizer`, `--early_stopping`, extra metrics, a JSON history and `compare`.
 

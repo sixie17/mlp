@@ -1,7 +1,7 @@
 # 08 — Backpropagation
 
-Code: `Network.backward` in `src/lib/network.py`, `DenseLayer.backward` and
-`DenseLayer.activation_backward` in `src/lib/layers.py`
+Code: `Network.backward` in `src/utils/network.py`, `DenseLayer.backward` and
+`DenseLayer.activation_backward` in `src/utils/layers.py`
 
 ## The question backpropagation answers
 
