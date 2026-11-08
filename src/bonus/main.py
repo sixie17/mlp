@@ -19,7 +19,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from lib.cli import (add_compare_command, add_describe_command, add_predict_command,  # noqa: E402
-                     add_split_command, add_train_command, create_parser, parse_args)
+                     add_split_command, add_train_command, create_parser, parse_arguments)
 from lib.optimizers import OPTIMIZERS  # noqa: E402
 from lib.pipeline import run_compare, run_describe, run_predict, run_split, run_train  # noqa: E402
 from lib.training import EarlyStopping  # noqa: E402
@@ -33,44 +33,46 @@ EXAMPLES = """\
 
 
 def build_parser():
-    parser, sub = create_parser(
+    parser, subparsers = create_parser(
         "Multilayer perceptron - bonus part (optimizers, early stopping, extra metrics, "
         "metrics history, model comparison).", EXAMPLES)
-    add_describe_command(sub)
-    add_split_command(sub)
+    add_describe_command(subparsers)
+    add_split_command(subparsers)
 
-    train = add_train_command(sub, default_lr=0.001)
+    train = add_train_command(subparsers, default_learning_rate=0.001)
     train.add_argument("--optimizer", choices=list(OPTIMIZERS), default="adam", help="optimization algorithm")
-    train.add_argument("--early_stopping", action="store_true", help="stop when val_loss stops improving")
+    train.add_argument("--early_stopping", action="store_true",
+                       help="stop when the validation loss stops improving")
     train.add_argument("--patience", type=int, default=10, help="epochs without improvement before stopping")
     train.add_argument("--history", default="history.json", help="where to save the metrics history")
 
-    add_predict_command(sub)
-    add_compare_command(sub)
+    add_predict_command(subparsers)
+    add_compare_command(subparsers)
     return parser
 
 
 def main():
-    args = parse_args(build_parser())
+    arguments = parse_arguments(build_parser())
     try:
-        if args.command == "describe":
-            run_describe(args.dataset, args.rows)
-        elif args.command == "split":
-            run_split(args.dataset, args.out_dir, args.valid_ratio, args.seed)
-        elif args.command == "train":
-            early = EarlyStopping(patience=args.patience) if args.early_stopping else None
-            run_train(args.train, args.valid, hidden_layers=args.layer, activation=args.activation,
-                      weights_initializer=args.weights_initializer, loss=args.loss,
-                      optimizer=args.optimizer, learning_rate=args.learning_rate, epochs=args.epochs,
-                      batch_size=args.batch_size, seed=args.seed, model_path=args.model,
-                      plot_path=args.plot, show_plot=not args.no_show, early_stopping=early,
-                      extra_metrics=True, history_path=args.history)
-        elif args.command == "predict":
-            run_predict(args.dataset, args.model, extra_metrics=True, output_path=args.output)
-        elif args.command == "compare":
-            run_compare(args.histories, args.labels, args.plot, show=not args.no_show)
-    except (ValueError, OSError, KeyError, RuntimeError) as e:
-        print(f"error: {e}", file=sys.stderr)
+        if arguments.command == "describe":
+            run_describe(arguments.dataset, arguments.rows)
+        elif arguments.command == "split":
+            run_split(arguments.dataset, arguments.output_directory, arguments.validation_ratio, arguments.seed)
+        elif arguments.command == "train":
+            early_stopping = EarlyStopping(patience=arguments.patience) if arguments.early_stopping else None
+            run_train(arguments.training, arguments.validation, hidden_layers=arguments.layer,
+                      activation=arguments.activation, weights_initializer=arguments.weights_initializer,
+                      loss=arguments.loss, optimizer=arguments.optimizer,
+                      learning_rate=arguments.learning_rate, epochs=arguments.epochs,
+                      batch_size=arguments.batch_size, seed=arguments.seed, model_path=arguments.model,
+                      plot_path=arguments.plot, show_plot=not arguments.no_show,
+                      early_stopping=early_stopping, extra_metrics=True, history_path=arguments.history)
+        elif arguments.command == "predict":
+            run_predict(arguments.dataset, arguments.model, extra_metrics=True, output_path=arguments.output)
+        elif arguments.command == "compare":
+            run_compare(arguments.histories, arguments.labels, arguments.plot, show=not arguments.no_show)
+    except (ValueError, OSError, KeyError, RuntimeError) as error:
+        print(f"error: {error}", file=sys.stderr)
         return 1
     return 0
 

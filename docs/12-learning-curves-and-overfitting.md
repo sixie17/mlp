@@ -4,7 +4,7 @@ Code: `src/lib/plots.py`
 
 ## The plots
 
-### `plot_learning_curves(history, out_path, show)` — mandatory
+### `plot_learning_curves(history, output_path, show)` — mandatory
 
 One figure, two graphs (as the subject asks), x-axis = epochs:
 
@@ -14,7 +14,7 @@ One figure, two graphs (as the subject asks), x-axis = epochs:
 The figure is saved as a PNG (`--plot`, default `learning_curves.png`) and shown in a window unless
 `--no_show`.
 
-### `plot_comparison(histories, out_path, show)` — bonus
+### `plot_comparison(histories, output_path, show)` — bonus
 
 Several training runs on the same two graphs: one color per run, solid = training,
 dashed = validation. Used by the `compare` command with the JSON files written by `train --history`.
@@ -45,7 +45,7 @@ accuracy peaks early (≈ 97–98%) and ends at 95.6%. That is **mild overfittin
 
 Same model, 5 different random splits:
 
-| Split seed | final train loss / acc | final val loss / acc | best val_loss (epoch) |
+| Split seed | final train loss / accuracy | final validation loss / accuracy | best val_loss (epoch) |
 |-----------:|-----------------------:|---------------------:|----------------------:|
 | 0 | 0.030 / 99.1% | 0.166 / 95.6% | 0.157 (24) |
 | 1 | 0.046 / 98.9% | 0.064 / 98.2% | 0.062 (43) |
@@ -63,7 +63,7 @@ Conclusions:
 
 Variants, averaged over the same 5 splits:
 
-| Settings | train loss | val loss | val acc |
+| Settings | train loss | validation loss | validation accuracy |
 |----------|-----------:|---------:|--------:|
 | default (24-24, SGD 0.05, 70 epochs) | 0.043 | 0.088 | 97.5% |
 | 30 epochs | 0.056 | 0.089 | 97.7% |

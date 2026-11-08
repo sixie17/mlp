@@ -45,11 +45,11 @@ mini-batches.
 ```python
 class Optimizer:
     def __init__(self, learning_rate): ...
-    def apply(self, params, grads): ...     # updates params IN PLACE
+    def apply(self, parameters, gradients): ...     # updates parameters IN PLACE
 ```
 
-- `params` = `network.parameters()` = `[W0, b0, W1, b1, W2, b2]` (the real arrays)
-- `grads`  = `network.backward(...)` = `[dW0, db0, …]` in the same order
+- `parameters` = `network.parameters()` = `[W0, b0, W1, b1, W2, b2]` (the real arrays)
+- `gradients`  = `network.backward(...)` = `[dW0, db0, …]` in the same order
 
 **In place** (`p -= …`, not `p = p - …`) matters: `p -= …` modifies the array that lives inside the
 layer; `p = p - …` would create a new array and leave the network unchanged.
@@ -60,7 +60,7 @@ by the parameter's position `i`.
 ## SGD — mandatory part
 
 ```python
-for p, g in zip(params, grads):
+for p, g in zip(parameters, gradients):
     p -= self.learning_rate * g
 ```
 
@@ -128,7 +128,7 @@ Used by the bonus `--optimizer` option.
 
 ## Comparison on this dataset (24-24 sigmoid, 70 epochs, seed-42 split)
 
-| Optimizer | lr | final train loss | final val loss | final val acc |
+| Optimizer | learning rate | final train loss | final validation loss | final validation accuracy |
 |-----------|---:|-----------------:|---------------:|--------------:|
 | sgd | 0.05 | 0.041 | 0.093 | 95.6% |
 | nesterov | 0.01 | 0.030 | 0.107 | 94.7% |

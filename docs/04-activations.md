@@ -77,7 +77,7 @@ z = [1.0, 3.0]  →  e^z = [2.72, 20.09]  →  softmax = [0.119, 0.881]     → 
   `softmax(z) = softmax(z − max(z))` (the extra factor cancels out), so `e^z` never overflows.
 - It has no element-wise derivative in the table (`None`): each output depends on **all** inputs.
   We never need it alone, because combined with cross-entropy the gradient simplifies to
-  `probs − one_hot(y)` (see [08](08-backpropagation.md)). That is why `Network` refuses softmax on
+  `probabilities − one_hot(y)` (see [08](08-backpropagation.md)). That is why `Network` refuses softmax on
   a hidden layer and requires it on the last one.
 
 ## The registry

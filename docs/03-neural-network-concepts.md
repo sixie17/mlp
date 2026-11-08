@@ -52,11 +52,11 @@ A = f(Z)
 
 | Symbol | Shape | Meaning |
 |--------|-------|---------|
-| `X` | (batch, n_in) | one row per sample, one column per input |
-| `W` | (n_in, n_out) | column `j` = the weights of neuron `j` |
-| `b` | (1, n_out) | one bias per neuron, added to every row |
-| `Z` | (batch, n_out) | weighted sums |
-| `A` | (batch, n_out) | layer output = next layer's `X` |
+| `X` | (batch, input_size) | one row per sample, one column per input |
+| `W` | (input_size, output_size) | column `j` = the weights of neuron `j` |
+| `b` | (1, output_size) | one bias per neuron, added to every row |
+| `Z` | (batch, output_size) | weighted sums |
+| `A` | (batch, output_size) | layer output = next layer's `X` |
 
 For the default network (`--layer 24 24`) and a batch of 8 tumors:
 
@@ -66,7 +66,7 @@ X  (8, 30)  @ W0 (30, 24) + b0 (1, 24) → sigmoid → (8, 24)
    (8, 24)  @ W2 (24, 2)  + b2 (1, 2)  → softmax → (8, 2)    [P(B), P(M)] per tumor
 ```
 
-**Number of parameters** of a layer = `n_in × n_out + n_out`:
+**Number of parameters** of a layer = `input_size × output_size + output_size`:
 
 | Layer | Weights | Biases | Total |
 |-------|--------:|-------:|------:|
@@ -76,7 +76,7 @@ X  (8, 30)  @ W0 (30, 24) + b0 (1, 24) → sigmoid → (8, 24)
 | **network** | | | **1 394** |
 
 The subject's diagram writes a weight matrix as `W_{l0 l1}` of size (3, 4) — that is
-(neurons in l₁, neurons in l₀). We store the transpose, (n_in, n_out), so that a batch of
+(neurons in l₁, neurons in l₀). We store the transpose, (input_size, output_size), so that a batch of
 row-vectors can be multiplied as `X @ W`. Same numbers, different orientation.
 
 ## What "learning" means

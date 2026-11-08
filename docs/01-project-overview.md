@@ -89,8 +89,8 @@ bonus/main.py ─────┼──► cli.py (options)      pipeline.py (com
 
 | Program | Settings | Validation accuracy | Validation BCE |
 |---------|----------|--------------------:|---------------:|
-| mandatory | 24-24 sigmoid, SGD lr 0.05, batch 8, 70 epochs | 95.6% | 0.093 |
-| bonus | same network, Adam lr 0.001 + early stopping | 97.3% | 0.078 |
+| mandatory | 24-24 sigmoid, SGD learning rate 0.05, batch 8, 70 epochs | 95.6% | 0.093 |
+| bonus | same network, Adam learning rate 0.001 + early stopping | 97.3% | 0.078 |
 
 Across 5 different random splits the default mandatory model averages **97.5%** validation
 accuracy (see [12 — Learning curves and overfitting](12-learning-curves-and-overfitting.md)).

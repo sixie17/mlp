@@ -10,7 +10,7 @@ as small as possible. It must be:
 - small when the predictions are good, large when they are bad;
 - differentiable, so we can compute which way to move each weight.
 
-All our losses take `probs` (softmax output, shape `(n, 2)`) and integer labels `y` (shape `(n,)`).
+All our losses take `probabilities` (softmax output, shape `(n, 2)`) and integer labels `y` (shape `(n,)`).
 
 ## Cross-entropy, intuitively
 
@@ -30,7 +30,7 @@ pushes the network to be both correct and well-calibrated.
 A model that always answers 50/50 has loss `log 2 ≈ 0.693`. That is why the first epochs start
 around 0.5–0.7.
 
-## Binary cross-entropy — `binary_cross_entropy(probs, y)`
+## Binary cross-entropy — `binary_cross_entropy(probabilities, y)`
 
 The formula in the subject (used by `predict`):
 
@@ -38,10 +38,10 @@ The formula in the subject (used by `predict`):
 E = −(1/N) · Σₙ [ yₙ · log(pₙ) + (1 − yₙ) · log(1 − pₙ) ]
 ```
 
-- `pₙ` = predicted probability of malignant = `probs[:, 1]`;
+- `pₙ` = predicted probability of malignant = `probabilities[:, 1]`;
 - if the tumor is M (`y = 1`) only `log(p)` counts; if B (`y = 0`) only `log(1 − p)` counts.
 
-## Categorical cross-entropy — `categorical_cross_entropy(probs, y)`
+## Categorical cross-entropy — `categorical_cross_entropy(probabilities, y)`
 
 The general form for K classes, with one-hot targets:
 
@@ -63,7 +63,7 @@ binary:       −[ y·log P(M) + (1 − y)·log(1 − P(M)) ]
 With `y_M = y`, `y_B = 1 − y` and `P(B) = 1 − P(M)`, the two lines are identical. So:
 
 - `--loss categoricalCrossentropy` (default) and `--loss binaryCrossentropy` print the same values;
-- the gradient used in backpropagation is the same (`probs − one_hot(y)`).
+- the gradient used in backpropagation is the same (`probabilities − one_hot(y)`).
 
 ## Numerical safety
 
@@ -86,4 +86,4 @@ def get_loss(name):     # function or ValueError
 |-------|------|
 | `training.evaluate` (each epoch, train and validation) | the one chosen with `--loss` |
 | `pipeline.run_predict` | always binary cross-entropy (subject requirement) |
-| backpropagation | not called directly: its gradient `probs − one_hot(y)` is written in `Network.backward` |
+| backpropagation | not called directly: its gradient `probabilities − one_hot(y)` is written in `Network.backward` |

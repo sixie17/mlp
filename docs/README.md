@@ -42,7 +42,7 @@ data/data.csv
    │  split     → data/data_training.csv (80%) + data/data_validation.csv (20%), stratified
    ▼
  train
-   │  load + clean → standardize (mean/std of training set)
+   │  load + clean → standardize (mean / standard deviation of training set)
    │  build network 30 → 24 → 24 → 2 (softmax)
    │  for each epoch, for each mini-batch:
    │      feedforward → loss → backpropagation → gradient descent

@@ -59,20 +59,20 @@ Softmax and cross-entropy cancel out into the very simple **`p − y`**: predict
 target. Because the loss is a **mean** over `m` samples, each sample's gradient is divided by `m`.
 
 ```python
-dz = (probs - one_hot(y, probs.shape[1])) / m
+dZ = (probabilities - one_hot(y, probabilities.shape[1])) / m
 ```
 
 Example, one malignant tumor (target `[0, 1]`), prediction `[0.3, 0.7]`:
-`dz = [0.3, −0.3]` → "lower the B score, raise the M score".
+`dZ = [0.3, −0.3]` → "lower the B score, raise the M score".
 
 ## Step 2 — gradients of a dense layer
 
 Given `dZ` for a layer with input `X` and `Z = X @ W + b`:
 
 ```
-dW = Xᵀ @ dZ                (n_in, m) @ (m, n_out) → (n_in, n_out)
-db = Σ over the batch of dZ  (1, n_out)
-dX = dZ @ Wᵀ                (m, n_out) @ (n_out, n_in) → (m, n_in)
+dW = Xᵀ @ dZ                (input_size, m) @ (m, output_size) → (input_size, output_size)
+db = Σ over the batch of dZ  (1, output_size)
+dX = dZ @ Wᵀ                (m, output_size) @ (output_size, input_size) → (m, input_size)
 ```
 
 Why:
@@ -86,11 +86,11 @@ Why:
 A good sanity check: every gradient has exactly the shape of its parameter.
 
 ```python
-def backward(self, dz):
-    dW = self.x.T @ dz
-    db = np.sum(dz, axis=0, keepdims=True)
-    dx = dz @ self.W.T
-    return dW, db, dx
+def backward(self, dZ):
+    dW = self.X.T @ dZ
+    db = np.sum(dZ, axis=0, keepdims=True)
+    dX = dZ @ self.W.T
+    return dW, db, dX
 ```
 
 ## Step 3 — through the activation of the previous layer
@@ -102,8 +102,8 @@ dZ_prev = dX * f'(Z_prev)
 ```
 
 ```python
-def activation_backward(self, da):
-    return da * self.activation_derivative(self.z)     # z stored during forward
+def activation_backward(self, d_output):
+    return d_output * self.activation_derivative(self.Z)     # z stored during forward
 ```
 
 With sigmoid, `f'(z) = s(1 − s)` is at most 0.25: every sigmoid layer shrinks the gradient by at
@@ -112,13 +112,13 @@ least 4×. That is the *vanishing gradient* problem and why deep networks prefer
 ## Putting it together: `Network.backward`
 
 ```python
-dz = (probs - one_hot(y)) / m                       # step 1
+dZ = (probabilities - one_hot(y)) / m                       # step 1
 for i in reversed(range(len(self.layers))):         # 2, 1, 0
-    dW, db, dx = self.layers[i].backward(dz)        # step 2
-    grads.append(db); grads.append(dW)
+    dW, db, dX = self.layers[i].backward(dZ)        # step 2
+    gradients.append(db); gradients.append(dW)
     if i > 0:
-        dz = self.layers[i - 1].activation_backward(dx)   # step 3
-grads.reverse()                                     # [dW0, db0, dW1, db1, dW2, db2]
+        dZ = self.layers[i - 1].activation_backward(dX)   # step 3
+gradients.reverse()                                     # [dW0, db0, dW1, db1, dW2, db2]
 ```
 
 For the default network:
@@ -139,7 +139,7 @@ dW0 = Xᵀ @ dZ0                          (30, 24)     db0 (1, 24)
 - **The forward pass must run first**: `backward` reads the cached `x` and `z` of each layer.
 - **All gradients are computed before any weight changes.** `dX = dZ @ Wᵀ` uses the same `W` that
   produced the prediction. The optimizer updates the weights only after `backward` returns.
-- **Order matters**: `grads` is in the same order as `network.parameters()`, so the optimizer
+- **Order matters**: `gradients` is in the same order as `network.parameters()`, so the optimizer
   can pair them with `zip`.
 
 ## How we know it is correct: gradient checking

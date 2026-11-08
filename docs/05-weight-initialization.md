@@ -18,27 +18,27 @@ neurons differ.
 - Weights **too small** → the signal shrinks a bit more at every layer and the gradients vanish.
 
 The goal is to keep the **variance** of the activations roughly the same from layer to layer.
-The right scale depends on how many inputs a neuron has (`n_in`, also called *fan-in*).
+The right scale depends on how many inputs a neuron has (`input_size`, also called *fan-in*).
 
 ## The initializers
 
-All take `(in_dim, out_dim, rng)` and return a matrix of shape `(in_dim, out_dim)`.
+All take `(input_size, output_size, random_generator)` and return a matrix of shape `(input_size, output_size)`.
 
 ### Xavier / Glorot (for sigmoid, tanh)
 
 ```
-xavierUniform:  W ~ Uniform(−L, +L),   L = √(6 / (n_in + n_out))
-xavierNormal:   W ~ Normal(0, σ),      σ = √(2 / (n_in + n_out))
+xavierUniform:  W ~ Uniform(−L, +L),   L = √(6 / (input_size + output_size))
+xavierNormal:   W ~ Normal(0, σ),      σ = √(2 / (input_size + output_size))
 ```
 
-Balances the variance for the forward pass (depends on `n_in`) and the backward pass
-(depends on `n_out`). Designed for activations that are symmetric around 0.
+Balances the variance for the forward pass (depends on `input_size`) and the backward pass
+(depends on `output_size`). Designed for activations that are symmetric around 0.
 
 ### He / Kaiming (for ReLU)
 
 ```
-heUniform:  W ~ Uniform(−L, +L),   L = √(6 / n_in)
-heNormal:   W ~ Normal(0, σ),      σ = √(2 / n_in)
+heUniform:  W ~ Uniform(−L, +L),   L = √(6 / input_size)
+heNormal:   W ~ Normal(0, σ),      σ = √(2 / input_size)
 ```
 
 ReLU sets about half of its inputs to 0, which halves the variance; He compensates with a factor
@@ -55,7 +55,7 @@ Example for the first layer (30 → 24):
 
 ## Reproducibility
 
-The `Network` creates `rng = np.random.default_rng(seed)` and passes it to every layer's `build`,
+The `Network` creates `random_generator = np.random.default_rng(seed)` and passes it to every layer's `build`,
 so with the same `--seed` you get exactly the same starting weights — and therefore the same
 training run.
 

@@ -86,7 +86,7 @@ binary and categorical cross-entropy are identical.
 
 **Why preprocess / standardize?**
 Features have scales differing by ~140 000× (`area_worst` vs `fractal_dimension_se`). Without
-scaling, big features dominate and gradient descent is slow and unstable. Mean/std come from the
+scaling, big features dominate and gradient descent is slow and unstable. Mean/standard deviation come from the
 training set only (no leakage) and are saved in the model for prediction.
 → [02](02-dataset-and-preprocessing.md)
 
@@ -100,7 +100,7 @@ both sets keep 37% malignant.
 
 **Why random initialization? Why He / Xavier?**
 Equal weights → all neurons identical forever. The scale keeps the signal from vanishing or
-exploding: He for ReLU (`√(6/n_in)`), Xavier for sigmoid/tanh (`√(6/(n_in+n_out))`).
+exploding: He for ReLU (`√(6/input_size)`), Xavier for sigmoid/tanh (`√(6/(input_size+output_size))`).
 → [05](05-weight-initialization.md)
 
 **Why is validation worse than training? Is it overfitting?**

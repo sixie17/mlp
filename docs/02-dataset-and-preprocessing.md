@@ -89,7 +89,7 @@ data/broken.csv: warning: removed 4/570 rows (no diagnosis: 1, missing/non-numer
 Every command that uses data (`split`, `train`, `predict`) goes through this function, so the same
 rules apply everywhere.
 
-## Step 4 — Splitting: `split_dataset(df, valid_ratio=0.2, seed=42)`
+## Step 4 — Splitting: `split_dataset(df, validation_ratio=0.2, seed=42)`
 
 We need two sets:
 
@@ -102,12 +102,12 @@ same proportion of M and B as the full dataset.
 
 ```python
 for label in LABELS:                                   # "B", then "M"
-    idx = rng.permutation(df.index[df["diagnosis"] == label].to_numpy())
-    n_valid = int(round(len(idx) * valid_ratio))
-    valid_idx.extend(idx[:n_valid])                    # 20% of this class
-    train_idx.extend(idx[n_valid:])                    # 80% of this class
-train_idx = rng.permutation(train_idx)                 # mix the classes again
-valid_idx = rng.permutation(valid_idx)
+    class_indices = random_generator.permutation(df.index[df["diagnosis"] == label].to_numpy())
+    validation_count = int(round(len(class_indices) * validation_ratio))
+    validation_indices.extend(class_indices[:validation_count])                    # 20% of this class
+    training_indices.extend(class_indices[validation_count:])                    # 80% of this class
+training_indices = random_generator.permutation(training_indices)                 # mix the classes again
+validation_indices = random_generator.permutation(validation_indices)
 ```
 
 Result:
@@ -139,7 +139,7 @@ Turns a table into the two arrays the network needs:
 For each feature:
 
 ```
-x' = (x − mean) / std
+x' = (x − mean) / standard_deviation
 ```
 
 After this every feature has mean 0 and standard deviation 1.
@@ -152,21 +152,21 @@ and need a tiny learning rate. With standardized inputs all features start on eq
 **Fit on training data only:**
 
 ```python
-scaler = StandardScaler().fit(x_train)       # mean and std from the training set
-x_train = scaler.transform(x_train)
-x_valid = scaler.transform(x_valid)          # validation uses the TRAINING mean/std
+scaler = StandardScaler().fit(training_features)       # mean and standard deviation from the training set
+training_features = scaler.transform(training_features)
+validation_features = scaler.transform(validation_features)          # validation uses the TRAINING mean / standard deviation
 ```
 
-Computing the mean/std on the validation set would let information about it leak into training
+Computing the mean / standard deviation on the validation set would let information about it leak into training
 (*data leakage*). In real life, new patients arrive one by one: you must scale them with
 statistics you already have.
 
-**Saved with the model:** `to_dict()` / `from_dict()` let `save_model` store the mean and std in
+**Saved with the model:** `to_dict()` / `from_dict()` let `save_model` store the mean and standard deviation in
 the model file, so `predict` applies exactly the same transformation.
 
-**Edge case:** if a feature has std = 0 (constant column), we divide by 1 instead of 0.
+**Edge case:** if a feature has standard deviation = 0 (constant column), we divide by 1 instead of 0.
 
-## Step 7 — One-hot encoding: `one_hot(y, num_classes=2)`
+## Step 7 — One-hot encoding: `one_hot(y, class_count=2)`
 
 The network has 2 output neurons (P(B), P(M)), so labels become 2-element target vectors:
 
@@ -176,9 +176,9 @@ y = [1, 0, 0]   →   [[0, 1],
                      [1, 0]]
 ```
 
-Used by the loss and by backpropagation (`probs − one_hot(y)`).
+Used by the loss and by backpropagation (`probabilities − one_hot(y)`).
 
-## Exploration: `describe_dataset(path, n_rows=5)`
+## Exploration: `describe_dataset(path, row_count=5)`
 
 Prints the dimensions and the first rows of the raw file, rows labelled by ID, one column per
 feature:

@@ -29,13 +29,13 @@ from lib.pipeline import ...
 
 def build_parser(): ...        # declare the commands (from cli.py)
 def main():
-    args = parse_args(build_parser())
+    arguments = parse_arguments(build_parser())
     try:
-        if args.command == "train":
+        if arguments.command == "train":
             run_train(...)     # call the pipeline with the parsed options
         ...
-    except (ValueError, OSError, KeyError, RuntimeError) as e:
-        print(f"error: {e}", file=sys.stderr)    # clean message instead of a traceback
+    except (ValueError, OSError, KeyError, RuntimeError) as error:
+        print(f"error: {error}", file=sys.stderr)    # clean message instead of a traceback
         return 1
     return 0
 ```
@@ -53,7 +53,7 @@ creates an `EarlyStopping` when `--early_stopping` is set, and turns `extra_metr
 | `HelpFormatter` | shows each option's default and keeps the examples' line breaks |
 | `Parser` | on a wrong argument, prints the full help and then the error |
 | `create_parser(description, examples)` | the main parser + the "commands" group |
-| `parse_args(parser)` | no arguments at all → print help and exit |
+| `parse_arguments(parser)` | no arguments at all → print help and exit |
 | `add_describe_command`, `add_split_command`, `add_train_command`, `add_predict_command`, `add_compare_command` | declare each command and its options |
 
 The choices for `--activation`, `--weights_initializer`, `--loss` and `--optimizer` are read from
@@ -74,15 +74,15 @@ there makes it available on the command line automatically.
 | Option | Default | Meaning |
 |--------|---------|---------|
 | `--dataset` | `data/data.csv` | raw dataset |
-| `--out_dir` | `data` | where to write `data_training.csv` and `data_validation.csv` |
-| `--valid_ratio` | 0.2 | share of rows for validation |
+| `--output_directory` | `data` | where to write `data_training.csv` and `data_validation.csv` |
+| `--validation_ratio` | 0.2 | share of rows for validation |
 | `--seed` | 42 | makes the split reproducible |
 
 ### `train`
 
 | Option | Default | Meaning |
 |--------|---------|---------|
-| `--train` / `--valid` | `data/data_training.csv` / `data/data_validation.csv` | the two sets |
+| `--training` / `--validation` | `data/data_training.csv` / `data/data_validation.csv` | the two sets |
 | `--layer` | `24 24` | hidden layer sizes |
 | `--activation` | `sigmoid` | hidden activation: identity, relu, sigmoid, tanh |
 | `--weights_initializer` | `heUniform` | heUniform, heNormal, xavierUniform, xavierNormal, glorot… |
@@ -105,7 +105,7 @@ there makes it available on the command line automatically.
 |--------|---------|---------|
 | `--dataset` | `data/data_validation.csv` | data to predict (must contain the diagnosis to evaluate) |
 | `--model` | `saved_model.npz` | model to load |
-| `--output` | none | optional CSV: `id, diagnosis, predicted, probability_M` |
+| `--output` | none | optional CSV: `id, diagnosis, predicted, probability_malignant` |
 
 ### `compare` (bonus)
 
@@ -118,10 +118,10 @@ there makes it available on the command line automatically.
 
 ## `pipeline.py` — what each command does
 
-### `run_describe(dataset, n_rows)`
+### `run_describe(dataset, row_count)`
 Calls `describe_dataset`.
 
-### `run_split(dataset, out_dir, valid_ratio, seed)`
+### `run_split(dataset, output_directory, validation_ratio, seed)`
 `load_dataset` → `split_dataset` → `save_dataset` ×2 → prints row counts and class balance.
 
 ### `load_training_data(train_path, valid_path)`
@@ -129,7 +129,7 @@ Loads both sets, extracts `X`/`y`, fits a `StandardScaler` **on the training set
 it to both.
 
 ### `run_train(...)`
-1. `load_training_data` → prints `x_train shape : (456, 30)` and `x_valid shape : (113, 30)`;
+1. `load_training_data` → prints `training set shape   : (456, 30)` and `validation set shape : (113, 30)`;
 2. `create_network` → prints the summary;
 3. `get_optimizer` and `fit` → epoch lines;
 4. `save_model` → `> saving model 'saved_model.npz' to disk...`;
@@ -139,12 +139,12 @@ it to both.
 ### `run_predict(dataset, model_path, extra_metrics, output_path)`
 1. `load_model` → network + scaler;
 2. `load_dataset`, `get_features_and_labels`, check the number of features;
-3. standardize with the **saved** mean/std;
+3. standardize with the **saved** mean / standard deviation;
 4. forward → probabilities → `argmax` → predicted classes;
 5. print binary cross-entropy, accuracy, confusion counts (+ bonus metrics);
 6. optional predictions CSV.
 
-### `run_compare(history_paths, labels, out_path, show)`
+### `run_compare(history_paths, labels, output_path, show)`
 Reads each JSON history, names each run (label or `"<optimizer> <layers>"`), calls
 `plot_comparison`.
 
